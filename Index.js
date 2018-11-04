@@ -2,7 +2,7 @@ function initMap() {
     var markerArray = [];
 
     // Instantiate a directions service.
-    var directionsService = new google.maps.DirectionsService;
+    var directionsService = new google.maps.DirectionsService; 
 
     // Create a map and center it on Manhattan.
     var map = new google.maps.Map(document.getElementById('map'), {
