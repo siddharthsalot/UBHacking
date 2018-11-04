@@ -30,7 +30,7 @@ function initMap() {
   function calculateAndDisplayRoute(directionsDisplay, directionsService,
       markerArray, stepDisplay, map) {
     // First, remove any existing markers from the map.
-    for (var i = 0; i < markerArray.length; i+=8) {
+    for (var i = 0; i < markerArray.length; i+=10) {
       markerArray[i].setMap(null);
     }
 
@@ -60,7 +60,7 @@ function initMap() {
     // when calculating new routes.
     var myRoute = directionResult.routes[0].legs[0];
     var length = myRoute.steps.length;
-    for (var i = 0; i < myRoute.steps.length; i+=8) {
+    for (var i = 0; i < myRoute.steps.length; i+=10) {
       var startLoc = myRoute.steps[i].start_location.lat();
       var startLng = myRoute.steps[i].start_location.lng();
       var latlng = {lat: parseFloat(startLoc), lng: parseFloat(startLng)};
@@ -75,7 +75,7 @@ function initMap() {
         console.log("ok" + response);
         try {
             var obj = JSON.parse(response);
-            var text = "<b>Temperature: </b>" + String(obj.main.temp) + "°F <br/> <b>Description:</b> " + String(obj.weather[0].description);
+            var text = "<b>Min Temperature: </b>" + String(obj.main.temp_min) + "°F<br/><b>Current Temperature: </b>" + String(obj.main.temp) + "°F <br/><b>Max Temperature: </b>" + String(obj.main.temp_max) + "°F<br/><b>Wind speed:</b> " + String(obj.wind.speed) +  "m/s<br/><b>Wind Direction:</b>" + toTextualDescription(obj.wind.deg) + "<br/><b>Description:</b> " + String(obj.weather[0].description);
             var iconImg = obj.weather[0].icon;
             var iconUrl = "http://openweathermap.org/img/w/" + iconImg + ".png";
 
@@ -99,6 +99,18 @@ function initMap() {
 
     xhttp.send();
   }
+  
+  function  toTextualDescription(degree){
+    if (degree>337.5) return 'Northerly';
+    if (degree>292.5) return 'North Westerly';
+    if(degree>247.5) return 'Westerly';
+    if(degree>202.5) return 'South Westerly';
+    if(degree>157.5) return 'Southerly';
+    if(degree>122.5) return 'South Easterly';
+    if(degree>67.5) return 'Easterly';
+    if(degree>22.5){return 'North Easterly';}
+    return 'Northerly';
+}
 
   function attachInstructionText(stepDisplay, marker, startLoc, startLng, map, text) {
     google.maps.event.addListener(marker, 'click', function() {
